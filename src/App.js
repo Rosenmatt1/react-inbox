@@ -1,28 +1,41 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from 'react'
+import './App.css'
 
 class App extends Component {
+  constructor() {
+    super()
+    this.state={
+      displayError: false
+    }
+  }
+
+  fetchMessages = () => {
+    return fetch('http://localhost:8082/api/messages')
+      .then(res => res.json())
+      .then(todos => {
+        this.setState({ todos: todos })
+        return todos
+      })
+  }
+
+  componentDidMount() {
+    this.fetchMessages()
+      .catch(err => {
+        this.setState({
+          displayError: true
+        })
+      })
+  }
+
+
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
+      <div>
+
+        {this.state.displayError ? "Unable to load Messages" : ""}
       </div>
-    );
+    )
   }
 }
 
-export default App;
+export default App
