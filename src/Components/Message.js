@@ -1,12 +1,13 @@
 import React, { Component } from 'react'
-import '../App.css'
+// import '../App.css'
+import '../index.css'
 
 class Message extends Component {
 
   render() {
 
     return (
-      <div className="row message unread">
+      <div className={this.props.read ? "row message read" : "row message unread"}>
         <div className="col-xs-1">
           <div className="row">
             <div className="col-xs-2">
@@ -17,9 +18,12 @@ class Message extends Component {
             </div>
           </div>
         </div>
-        <div className="col-xs-11">
+        <div 
+        className="col-xs-11"
+        onClick={() => this.props.markAsRead(this.props)}
+        >
           <a href="/#">
-            Here is some message text that has a bunch of stuff
+            {this.props.message.body}
           </a>
         </div>
       </div>
