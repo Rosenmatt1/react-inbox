@@ -12,9 +12,10 @@ class MessageList extends Component {
         {this.props.messages.map((message, idx) => {
           return <Message 
           key={idx}
-          
           message={message}
           markAsRead={this.props.markAsRead}
+          markAsSelected={this.props.markAsSelected}
+          markAsStarred={this.props.markAsStarred}
           />
         })}
       </div>

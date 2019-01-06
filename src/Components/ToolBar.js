@@ -14,12 +14,20 @@ class ToolBar extends Component {
             unread messages
           </p>
 
+          <a 
+          className="btn btn-danger"
+          href="/#"
+          >
+            <i className="fa fa-plus"></i>
+          </a>
+
           <button className="btn btn-default">
             <i className="fa fa-square-o"></i>
           </button>
 
           <button 
           className="btn btn-default"
+          onClick={this.props.markAsReadButton}
           >
             Mark As Read
           </button>
@@ -28,7 +36,10 @@ class ToolBar extends Component {
             Mark As Unread
           </button>
 
-          <select className="form-control label-select">
+          <select 
+          onChange={(e) => this.props.addLabel(e)}
+          className="form-control label-select"
+          >
             <option>Apply label</option>
             <option value="dev">dev</option>
             <option value="personal">personal</option>
