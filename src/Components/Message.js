@@ -7,7 +7,7 @@ class Message extends Component {
   render() {
 
     return (
-      <div className={this.props.message.read ? "row message read" : this.props.message.selected ? "row message read selected" : "row message unread"}>
+      <div className={this.props.message.read && this.props.message.selected ? "row message read selected" : this.props.message.selected ? "row message unread selected" : this.props.message.read ? "row message read" : "row message unread"}>
       
         <div className="col-xs-1">
           <div className="row">
@@ -15,7 +15,7 @@ class Message extends Component {
               <input 
                 type="checkbox" 
                 onChange={() => this.props.markAsSelected(this.props.message.id)}
-                checked={(typeof this.props.message.selected !== "undefined") && this.props.message.selected === true ? "checked" : ""}
+                checked={this.props.message.selected ? "checked" : ""}
               />
             </div>
             <div 
@@ -42,6 +42,7 @@ class Message extends Component {
           <span
             className={this.props.message.labels.includes("personal") ? "label label-warning" : "hidden"}>personal
           </span>
+          {/* {props.message.labels.map(label => <span className="label label-warning>"{label} </span>)} */}
           <a href="/#">
             {this.props.message.subject}
           </a>

@@ -18,12 +18,10 @@ class App extends Component {
       .then(res => res.json())
       .then(messages => { 
         let addSelected = messages.map(message => {
-          if (!message.selected) {
+          
             message.selected = false
-            return message
-          } else {
-            return message
-          }
+        
+          return message
         })
         this.setState({ messages: addSelected })
         return messages
@@ -39,53 +37,34 @@ class App extends Component {
       })
   }
 
-//   let message = {
-//       messageIds: [id],
-//       command: "read",
-//       "read": true
-//     }
-
-//   updates = async (id, command, key, value) => {
-//   await fetch('http://localhost:8082/api/messages', {
-//   method: 'PATCH',
-//   body: JSON.stringify({
-//     messageIds: [id],
-//     command: "read",
-//     "read": true
-//   }),
-//   headers: {
-//     'Content-Type': 'application/json',
-//     'Accept': 'application/json',
-//   }
-// })
-//   }
+  updates = async (id, command, key, value) => {
+    await fetch('http://localhost:8082/api/messages', {
+      method: 'PATCH',
+      body: JSON.stringify({
+        messageIds: id,
+        command: command,
+        [key]: value
+        }),
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+      }
+    })
+  }
   
-
   markAsRead = (id) => {
     let readMessage = this.state.messages.map(message => {
       if (message.id === id) {
-        message.read = !message.read
+        message.read = true
       }
       return message
     })
     this.setState({
       messages: readMessage
     })
+    this.updates([id], "read", "read", true)
   }
 
- 
-  // markAsRead = (index) => {
-  //   let read = this.state.messages.filter(message => {
-  //     return index.message.id === message.id
-  //   })
-  //   read[0].read === false ? read[0].read = true : read[0].read = false
-  //   this.setState({
-  //     messages: this.state.messages
-  //   })
-  // }
-
-
-    
   markAsSelected = (id) => {
     let selectedMessage = this.state.messages.map(message => {
       if (message.id === id) {
@@ -107,7 +86,6 @@ class App extends Component {
   //   })
   // }
   
-
   markAsStarred = (id) => {
     let starredMessage = this.state.messages.map(message => {
       if (message.id === id) message.starred = !message.starred
@@ -116,17 +94,37 @@ class App extends Component {
     this.setState({
       messages: starredMessage
     })
+    this.updates([id], "star", "star", true)
   }
 
-  // markAsReadButton = () => {
-  //   // e.preventDefault()
-    
-  //   const selectedMessages = this.state.messages.filter(message =>{
-  //     return message.selected === true
-  //   })
-  //   selectedMessages.forEach(message => this.markAsRead(message, id))
-  //   console.log(selectedMessages)
-  // }
+  markAsReadButton = () => {
+    const readArray = []
+    this.state.messages.map(message => {
+      if (message.selected === true) {
+        this.markAsRead(message.id)
+        readArray.push(message.id)
+        message.selected = false
+      }
+      return message
+    })
+    this.updates(readArray, "read", "read", true)
+  }
+
+  markAsUnreadButton = () => {
+    const readArray = []
+    this.state.messages.map(message => {
+      if (message.selected === true) {
+        message.read = false
+        readArray.push(message.id)
+        message.selected = false
+      }
+      return message
+    })
+    this.setState({
+      messages: this.state.messages
+    })
+    this.updates(readArray, "read", "read", false)
+  }
 
 
   render() {
@@ -136,6 +134,7 @@ class App extends Component {
         <ToolBar 
           addLabel={this.addLabel}
           markAsReadButton={this.markAsReadButton}
+          markAsUnreadButton={this.markAsUnreadButton}
         />
        
         <MessageList 
