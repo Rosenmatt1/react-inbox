@@ -37,13 +37,13 @@ class App extends Component {
       })
   }
 
-  updates = async (id, command, key, value) => {
+  updates = async (id, command, prop, value) => {
     await fetch('http://localhost:8082/api/messages', {
       method: 'PATCH',
       body: JSON.stringify({
         messageIds: id,
         command: command,
-        [key]: value
+        [prop]: value
         }),
       headers: {
         'Content-Type': 'application/json',
@@ -76,15 +76,6 @@ class App extends Component {
       messages: selectedMessage
     })
   }
-
-  // addLabel = (e) => {
-  //   let selectedLabel = e.target.value
-  //   let selectedMessages = this.state.messages.filter(message => message.selected)
-  //   console.log(selectedLabel)
-  //   this.setState({
-  //     messages: selectedMessages
-  //   })
-  // }
   
   markAsStarred = (id) => {
     let starredMessage = this.state.messages.map(message => {
@@ -126,7 +117,60 @@ class App extends Component {
     this.updates(readArray, "read", "read", false)
   }
 
+  deleteMessage = (index) => {
+    const readArray = []
+    const removeMessage = this.state.messages.filter(message => {
+      if (message.selected === false ) {
+        return index.id !== message.id
+      }
+      readArray.push(message.id)
+    })
+      this.setState({
+        messages: removeMessage
+      })
+    this.updates(readArray, "delete", "delete", false)
+  }
 
+  unreadTracker = () => {
+    let counter = 0
+    const countUnread = this.state.messages.filter(message => {
+      return message.read === false
+    })
+    counter = countUnread.length
+    return counter
+}
+
+  toolbarSelectAll = () => {
+    const howManySelected = this.state.messages.filter(message => message.selected === true)
+    const selectAll = this.state.messages.map(message => {
+     howManySelected.length !== this.state.messages.length 
+      ? message.selected = true
+      : message.selected = false
+     return message
+    })
+    this.setState({
+      messages: selectAll
+    })
+  }
+
+  addLabel = (e) => {
+    const newArr = []
+    const label = this.state.messages.map(message => {
+      if (message.selected === true) {
+        if (!message.labels.includes(e.target.value)) {
+          newArr.push(message.id)
+          message.labels = [...message.labels, e.target.value]
+          }
+        }
+        return message
+      })
+      this.setState({
+        messages: label
+      })
+      this.updates(newArr, "addLabel", "label", e.target.value)
+    }
+
+ 
   render() {
 
     return (
@@ -135,6 +179,10 @@ class App extends Component {
           addLabel={this.addLabel}
           markAsReadButton={this.markAsReadButton}
           markAsUnreadButton={this.markAsUnreadButton}
+          deleteMessage={this.deleteMessage}
+          unreadTracker={this.unreadTracker}
+          toolbarSelectAll={this.toolbarSelectAll}
+          messages={this.state.messages}
         />
        
         <MessageList 

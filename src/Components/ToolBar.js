@@ -2,15 +2,19 @@ import React, { Component } from 'react'
 // import '../App.css'
 import '../index.css'
 
+
+
 class ToolBar extends Component {
 
   render() {
+
+    const ifSelected = this.props.messages.filter(message => message.selected === true).length
 
     return (
       <div className="row toolbar">
         <div className="col-md-12">
           <p className="pull-right">
-            <span className="badge badge">2</span>
+            <span className="badge badge">{this.props.unreadTracker()}</span>
             unread messages
           </p>
 
@@ -21,8 +25,18 @@ class ToolBar extends Component {
             <i className="fa fa-plus"></i>
           </a>
 
-          <button className="btn btn-default">
-            <i className="fa fa-square-o"></i>
+          <button 
+          className="btn btn-default"
+            onClick={() => this.props.toolbarSelectAll()}
+          >
+            <i 
+            className={ifSelected === this.props.messages.length  
+            ? "fa fa-check-square-o" 
+            : ifSelected === 0
+            ? "fa fa-square-o"
+            : "fa fa-minus-square-o"
+            }
+            ></i>
           </button>
 
           <button 
@@ -56,7 +70,10 @@ class ToolBar extends Component {
             <option value="gschool">gschool</option>
           </select>
 
-          <button className="btn btn-default">
+          <button 
+          className="btn btn-default"
+            onClick={() => this.props.deleteMessage(this.props)}
+          >
             <i className="fa fa-trash-o"></i>
           </button>
         </div>
