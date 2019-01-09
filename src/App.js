@@ -2,13 +2,15 @@ import React, { Component } from 'react'
 import './index.css'
 import ToolBar from './Components/ToolBar.js'
 import MessageList from './Components/MessageList.js'
+import ComposeMessage from './Components/ComposeMessage.js'
 
 class App extends Component {
   constructor() {
     super()
       this.state={
         messages: [],
-        displayError: false
+        displayError: false,
+        displayCompose: false
       }
   }
 
@@ -201,6 +203,12 @@ class App extends Component {
     this.updates(newArr, "removeLabel", "label", e.target.value)
   }
 
+  composeNewMessage = () => {
+    this.setState({
+      displayCompose: !this.state.displayCompose
+    })
+  }
+
 
  
   render() {
@@ -219,7 +227,10 @@ class App extends Component {
           removeLabel={this.removeLabel}
           messages={this.state.messages}
           numOfSelected={numOfSelected}
+          composeNewMessage={this.composeNewMessage}
         />
+
+        {this.state.displayCompose ? <ComposeMessage /> : <span></span>}
        
         <MessageList 
           messages={this.state.messages}

@@ -23,6 +23,7 @@ class ToolBar extends Component {
 
           <a 
           className="btn btn-danger"
+            onClick={this.props.composeNewMessage}
           href="/#"
           >
             <i className="fa fa-plus"></i>
