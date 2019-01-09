@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-// import '../App.css'
 import '../index.css'
 import Message from './Message.js'
 

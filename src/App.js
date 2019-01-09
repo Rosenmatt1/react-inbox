@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-// import './App.css'
 import './index.css'
 import ToolBar from './Components/ToolBar.js'
 import MessageList from './Components/MessageList.js'
@@ -20,6 +19,7 @@ class App extends Component {
         let addSelected = messages.map(message => {
           
             message.selected = false
+            message.opened = false
         
           return message
         })
@@ -56,6 +56,7 @@ class App extends Component {
     let readMessage = this.state.messages.map(message => {
       if (message.id === id) {
         message.read = true
+        message.opened = !message.opened
       }
       return message
     })
@@ -117,11 +118,11 @@ class App extends Component {
     this.updates(readArray, "read", "read", false)
   }
 
-  deleteMessage = (index) => {
+  deleteMessage = (id) => {
     const readArray = []
     const removeMessage = this.state.messages.filter(message => {
       if (message.selected === false ) {
-        return index.id !== message.id
+        return id !== message.id
       }
       readArray.push(message.id)
     })
@@ -156,7 +157,7 @@ class App extends Component {
   addLabel = (e) => {
     const newArr = []
     const label = this.state.messages.map(message => {
-      if (message.selected === true) {
+      if (message.selected === true && e.target.value !== "Apply label") {
         if (!message.labels.includes(e.target.value)) {
           newArr.push(message.id)
           message.labels = [...message.labels, e.target.value]
@@ -170,8 +171,41 @@ class App extends Component {
       this.updates(newArr, "addLabel", "label", e.target.value)
     }
 
+  // removeLabel = (e) => {
+  //   const newArr = []
+  //   const labelsFiltered = this.state.messages.map(message => {
+  //     if (message.selected === true) {
+  //       if (message.labels.includes(e.target.value)) {
+  //         return indexOf
+  //       }
+  //     }
+  //   })
+  //   this.setState({
+  //     messages: labelsFiltered
+  //   })
+  //   this.updates(newArr, "removeLabel", "label", e.target.value)
+  // }
+
+  removeLabel = (e) => {
+    const newArr = []
+    const labelsFiltered = this.state.messages.map(message => {
+      if (message.selected === true) {
+        message.labels = message.labels.filter(label => label !== e.target.value)
+        newArr.push(message.id)
+      }
+      return message
+    })
+    this.setState({
+      messages: labelsFiltered
+    })
+    this.updates(newArr, "removeLabel", "label", e.target.value)
+  }
+
+
  
   render() {
+
+    const numOfSelected = this.state.messages.filter(message => message.selected === true).length
 
     return (
       <div className="container">
@@ -182,7 +216,9 @@ class App extends Component {
           deleteMessage={this.deleteMessage}
           unreadTracker={this.unreadTracker}
           toolbarSelectAll={this.toolbarSelectAll}
+          removeLabel={this.removeLabel}
           messages={this.state.messages}
+          numOfSelected={numOfSelected}
         />
        
         <MessageList 

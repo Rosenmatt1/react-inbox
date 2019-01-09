@@ -1,7 +1,5 @@
 import React, { Component } from 'react'
-// import '../App.css'
 import '../index.css'
-
 
 
 class ToolBar extends Component {
@@ -9,6 +7,11 @@ class ToolBar extends Component {
   render() {
 
     const ifSelected = this.props.messages.filter(message => message.selected === true).length
+
+    const disableToolbar = 
+      this.props.numOfSelected === 0
+      ? "disabled"
+      : ""
 
     return (
       <div className="row toolbar">
@@ -27,12 +30,13 @@ class ToolBar extends Component {
 
           <button 
           className="btn btn-default"
-            onClick={() => this.props.toolbarSelectAll()}
+          onClick={() => this.props.toolbarSelectAll()}
+         
           >
             <i 
             className={ifSelected === this.props.messages.length  
             ? "fa fa-check-square-o" 
-            : ifSelected === 0
+            : this.props.numOfSelected === 0
             ? "fa fa-square-o"
             : "fa fa-minus-square-o"
             }
@@ -42,6 +46,7 @@ class ToolBar extends Component {
           <button 
           className="btn btn-default"
           onClick={() => this.props.markAsReadButton()}
+          disabled={disableToolbar}
           >
             Mark As Read
           </button>
@@ -49,6 +54,7 @@ class ToolBar extends Component {
           <button 
           className="btn btn-default"
           onClick={() => this.props.markAsUnreadButton()}
+          disabled={disableToolbar}
           >
             Mark As Unread
           </button>
@@ -56,15 +62,20 @@ class ToolBar extends Component {
           <select 
           onChange={(e) => this.props.addLabel(e)}
           className="form-control label-select"
+          disabled={disableToolbar}
           >
-            <option>Apply label</option>
+            <option >Apply label</option>
             <option value="dev">dev</option>
             <option value="personal">personal</option>
             <option value="gschool">gschool</option>
           </select>
 
-          <select className="form-control label-select">
-            <option>Remove label</option>
+          <select 
+          className="form-control label-select"
+          onChange={(e) => this.props.removeLabel(e)}
+          disabled={disableToolbar}
+          >
+            <option >Remove label</option>
             <option value="dev">dev</option>
             <option value="personal">personal</option>
             <option value="gschool">gschool</option>
@@ -72,7 +83,8 @@ class ToolBar extends Component {
 
           <button 
           className="btn btn-default"
-            onClick={() => this.props.deleteMessage(this.props)}
+          onClick={() => this.props.deleteMessage(this.props)}
+          disabled={disableToolbar}
           >
             <i className="fa fa-trash-o"></i>
           </button>
