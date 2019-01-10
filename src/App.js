@@ -98,7 +98,7 @@ class App extends Component {
         this.markAsRead(message.id)
         readArray.push(message.id)
         message.selected = false
-        // message.opened = false
+        message.opened = false
       }
       return message
     })
@@ -179,9 +179,12 @@ class App extends Component {
   //   const labelsFiltered = this.state.messages.map(message => {
   //     if (message.selected === true) {
   //       if (message.labels.includes(e.target.value)) {
-  //         return indexOf
+  //         newArr.push(message.id)
+  //         let removed = message.labels.indexOf(e.target.value)
+  //         message.labels.splice(removed, 1)
   //       }
   //     }
+  //     return message
   //   })
   //   this.setState({
   //     messages: labelsFiltered
@@ -192,7 +195,7 @@ class App extends Component {
   removeLabel = (e) => {
     const newArr = []
     const labelsFiltered = this.state.messages.map(message => {
-      if (message.selected === true) {
+      if (message.selected) {
         message.labels = message.labels.filter(label => label !== e.target.value)
         newArr.push(message.id)
       }
@@ -210,12 +213,6 @@ class App extends Component {
       displayCompose: !this.state.displayCompose
     })
   }
-
-  // updateBody = (e) => {
-  //   this.setState({
-  //     body: e.target.value
-  //   })
-  // }
 
   updateSubject = (e) => {
     this.setState({
@@ -245,8 +242,6 @@ class App extends Component {
         })
         return messages
       })
-
-
   }
 
 
@@ -272,7 +267,6 @@ class App extends Component {
         {this.state.displayCompose
           ? <ComposeMessage
             sendMessage={this.sendMessage}
-
             updateSubject={this.updateSubject}
           />
           : ""}
@@ -284,7 +278,9 @@ class App extends Component {
           addLabel={this.addLabel}
           markAsStarred={this.markAsStarred}
         />
-        {this.state.displayError ? "Unable to load Messages" : ""}
+        {this.state.displayError 
+          ? "Unable to load Messages" 
+          : ""}
       </div>
     )
   }
