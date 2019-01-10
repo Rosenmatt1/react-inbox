@@ -7,22 +7,22 @@ import ComposeMessage from './Components/ComposeMessage.js'
 class App extends Component {
   constructor() {
     super()
-      this.state={
-        messages: [],
-        displayError: false,
-        displayCompose: false
-      }
+    this.state = {
+      messages: [],
+      displayError: false,
+      displayCompose: false,
+      body: "",
+      subject: ""
+    }
   }
 
   fetchMessages = () => {
     return fetch('http://localhost:8082/api/messages')
       .then(res => res.json())
-      .then(messages => { 
+      .then(messages => {
         let addSelected = messages.map(message => {
-          
-            message.selected = false
-            message.opened = false
-        
+          message.selected = false
+          message.opened = false
           return message
         })
         this.setState({ messages: addSelected })
@@ -46,14 +46,14 @@ class App extends Component {
         messageIds: id,
         command: command,
         [prop]: value
-        }),
+      }),
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
       }
     })
   }
-  
+
   markAsRead = (id) => {
     let readMessage = this.state.messages.map(message => {
       if (message.id === id) {
@@ -79,7 +79,7 @@ class App extends Component {
       messages: selectedMessage
     })
   }
-  
+
   markAsStarred = (id) => {
     let starredMessage = this.state.messages.map(message => {
       if (message.id === id) message.starred = !message.starred
@@ -98,6 +98,7 @@ class App extends Component {
         this.markAsRead(message.id)
         readArray.push(message.id)
         message.selected = false
+        // message.opened = false
       }
       return message
     })
@@ -123,14 +124,14 @@ class App extends Component {
   deleteMessage = (id) => {
     const readArray = []
     const removeMessage = this.state.messages.filter(message => {
-      if (message.selected === false ) {
+      if (message.selected === false) {
         return id !== message.id
       }
       readArray.push(message.id)
     })
-      this.setState({
-        messages: removeMessage
-      })
+    this.setState({
+      messages: removeMessage
+    })
     this.updates(readArray, "delete", "delete", false)
   }
 
@@ -141,15 +142,15 @@ class App extends Component {
     })
     counter = countUnread.length
     return counter
-}
+  }
 
   toolbarSelectAll = () => {
     const howManySelected = this.state.messages.filter(message => message.selected === true)
     const selectAll = this.state.messages.map(message => {
-     howManySelected.length !== this.state.messages.length 
-      ? message.selected = true
-      : message.selected = false
-     return message
+      howManySelected.length !== this.state.messages.length
+        ? message.selected = true
+        : message.selected = false
+      return message
     })
     this.setState({
       messages: selectAll
@@ -163,15 +164,15 @@ class App extends Component {
         if (!message.labels.includes(e.target.value)) {
           newArr.push(message.id)
           message.labels = [...message.labels, e.target.value]
-          }
         }
-        return message
-      })
-      this.setState({
-        messages: label
-      })
-      this.updates(newArr, "addLabel", "label", e.target.value)
-    }
+      }
+      return message
+    })
+    this.setState({
+      messages: label
+    })
+    this.updates(newArr, "addLabel", "label", e.target.value)
+  }
 
   // removeLabel = (e) => {
   //   const newArr = []
@@ -203,21 +204,59 @@ class App extends Component {
     this.updates(newArr, "removeLabel", "label", e.target.value)
   }
 
-  composeNewMessage = () => {
+  composeNewMessage = (e) => {
+    e.preventDefault()
     this.setState({
       displayCompose: !this.state.displayCompose
     })
   }
 
+  // updateBody = (e) => {
+  //   this.setState({
+  //     body: e.target.value
+  //   })
+  // }
 
- 
+  updateSubject = (e) => {
+    this.setState({
+      [e.target.id]: e.target.value
+    })
+  }
+
+  sendMessage = (e) => {
+    e.preventDefault()
+    var newMessage = {
+      body: this.state.body,
+      subject: this.state.subject,
+    }
+    fetch('http://localhost:8082/api/messages', {
+      method: 'POST',
+      body: JSON.stringify(newMessage),
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+      }
+    })
+      .then(res => res.json())
+      .then(messages => {
+        console.log(messages)
+        this.setState({
+          messages: [...this.state.messages, messages]
+        })
+        return messages
+      })
+
+
+  }
+
+
   render() {
 
     const numOfSelected = this.state.messages.filter(message => message.selected === true).length
 
     return (
       <div className="container">
-        <ToolBar 
+        <ToolBar
           addLabel={this.addLabel}
           markAsReadButton={this.markAsReadButton}
           markAsUnreadButton={this.markAsUnreadButton}
@@ -230,9 +269,15 @@ class App extends Component {
           composeNewMessage={this.composeNewMessage}
         />
 
-        {this.state.displayCompose ? <ComposeMessage /> : <span></span>}
-       
-        <MessageList 
+        {this.state.displayCompose
+          ? <ComposeMessage
+            sendMessage={this.sendMessage}
+
+            updateSubject={this.updateSubject}
+          />
+          : ""}
+
+        <MessageList
           messages={this.state.messages}
           markAsRead={this.markAsRead}
           markAsSelected={this.markAsSelected}

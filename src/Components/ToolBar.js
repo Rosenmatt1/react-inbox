@@ -6,12 +6,10 @@ class ToolBar extends Component {
 
   render() {
 
-    const ifSelected = this.props.messages.filter(message => message.selected === true).length
-
-    const disableToolbar = 
+    const disableToolbar =
       this.props.numOfSelected === 0
-      ? "disabled"
-      : ""
+        ? "disabled"
+        : ""
 
     return (
       <div className="row toolbar">
@@ -21,49 +19,48 @@ class ToolBar extends Component {
             unread messages
           </p>
 
-          <a 
-          className="btn btn-danger"
+          <a
+            className="btn btn-danger"
             onClick={this.props.composeNewMessage}
-          href="/#"
+            href="/#"
           >
             <i className="fa fa-plus"></i>
           </a>
 
-          <button 
-          className="btn btn-default"
-          onClick={() => this.props.toolbarSelectAll()}
-         
+          <button
+            className="btn btn-default"
+            onClick={() => this.props.toolbarSelectAll()}
           >
-            <i 
-            className={ifSelected === this.props.messages.length  
-            ? "fa fa-check-square-o" 
-            : this.props.numOfSelected === 0
-            ? "fa fa-square-o"
-            : "fa fa-minus-square-o"
-            }
+            <i
+              className={this.props.numOfSelected === this.props.messages.length
+                ? "fa fa-check-square-o"
+                : this.props.numOfSelected === 0
+                  ? "fa fa-square-o"
+                  : "fa fa-minus-square-o"
+              }
             ></i>
           </button>
 
-          <button 
-          className="btn btn-default"
-          onClick={() => this.props.markAsReadButton()}
-          disabled={disableToolbar}
+          <button
+            className="btn btn-default"
+            onClick={() => this.props.markAsReadButton()}
+            disabled={disableToolbar}
           >
             Mark As Read
           </button>
 
-          <button 
-          className="btn btn-default"
-          onClick={() => this.props.markAsUnreadButton()}
-          disabled={disableToolbar}
+          <button
+            className="btn btn-default"
+            onClick={() => this.props.markAsUnreadButton()}
+            disabled={disableToolbar}
           >
             Mark As Unread
           </button>
 
-          <select 
-          onChange={(e) => this.props.addLabel(e)}
-          className="form-control label-select"
-          disabled={disableToolbar}
+          <select
+            onChange={(e) => this.props.addLabel(e)}
+            className="form-control label-select"
+            disabled={disableToolbar}
           >
             <option >Apply label</option>
             <option value="dev">dev</option>
@@ -71,10 +68,10 @@ class ToolBar extends Component {
             <option value="gschool">gschool</option>
           </select>
 
-          <select 
-          className="form-control label-select"
-          onChange={(e) => this.props.removeLabel(e)}
-          disabled={disableToolbar}
+          <select
+            className="form-control label-select"
+            onChange={(e) => this.props.removeLabel(e)}
+            disabled={disableToolbar}
           >
             <option >Remove label</option>
             <option value="dev">dev</option>
@@ -82,10 +79,10 @@ class ToolBar extends Component {
             <option value="gschool">gschool</option>
           </select>
 
-          <button 
-          className="btn btn-default"
-          onClick={() => this.props.deleteMessage(this.props)}
-          disabled={disableToolbar}
+          <button
+            className="btn btn-default"
+            onClick={() => this.props.deleteMessage(this.props)}
+            disabled={disableToolbar}
           >
             <i className="fa fa-trash-o"></i>
           </button>
