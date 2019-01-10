@@ -18,7 +18,6 @@ class ToolBar extends Component {
             <span className="badge badge">{this.props.unreadTracker()}</span>
             unread messages
           </p>
-
           <a
             className="btn btn-danger"
             onClick={this.props.composeNewMessage}
@@ -26,7 +25,7 @@ class ToolBar extends Component {
           >
             <i className="fa fa-plus"></i>
           </a>
-
+          
           <button
             className="btn btn-default"
             onClick={() => this.props.toolbarSelectAll()}
@@ -38,7 +37,8 @@ class ToolBar extends Component {
                   ? "fa fa-square-o"
                   : "fa fa-minus-square-o"
               }
-            ></i>
+            >
+            </i>
           </button>
 
           <button
