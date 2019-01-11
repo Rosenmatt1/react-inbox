@@ -81,6 +81,7 @@ class App extends Component {
   }
 
   markAsStarred = (id) => {
+    console.log(id)
     let starredMessage = this.state.messages.map(message => {
       if (message.id === id) message.starred = !message.starred
       return message
@@ -94,7 +95,7 @@ class App extends Component {
   markAsReadButton = () => {
     const readArray = []
     this.state.messages.map(message => {
-      if (message.selected === true) {
+      if (message.selected) {
         this.markAsRead(message.id)
         readArray.push(message.id)
         message.selected = false
@@ -108,7 +109,7 @@ class App extends Component {
   markAsUnreadButton = () => {
     const readArray = []
     this.state.messages.map(message => {
-      if (message.selected === true) {
+      if (message.selected) {
         message.read = false
         readArray.push(message.id)
         message.selected = false
@@ -122,31 +123,32 @@ class App extends Component {
     this.updates(readArray, "read", "read", false)
   }
 
-  deleteMessage = (id) => {
+  deleteMessage = (e) => {
     const readArray = []
     const removeMessage = this.state.messages.filter(message => {
-      if (message.selected === false) {
-        return id !== message.id
+      if (message.selected) {
+        readArray.push(message.id)
       }
-      readArray.push(message.id)
+      return !message.selected
     })
     this.setState({
       messages: removeMessage
     })
+    console.log(readArray)
     this.updates(readArray, "delete", "delete", false)
   }
 
   unreadTracker = () => {
     let counter = 0
     const countUnread = this.state.messages.filter(message => {
-      return message.read === false
+      return !message.read
     })
     counter = countUnread.length
     return counter
   }
 
   toolbarSelectAll = () => {
-    const howManySelected = this.state.messages.filter(message => message.selected === true)
+    const howManySelected = this.state.messages.filter(message => message.selected)
     const selectAll = this.state.messages.map(message => {
       howManySelected.length !== this.state.messages.length
         ? message.selected = true
@@ -161,7 +163,7 @@ class App extends Component {
   addLabel = (e) => {
     const newArr = []
     const label = this.state.messages.map(message => {
-      if (message.selected === true && e.target.value !== "Apply label") {
+      if (message.selected && e.target.value !== "Apply label") {
         if (!message.labels.includes(e.target.value)) {
           newArr.push(message.id)
           message.labels = [...message.labels, e.target.value]
@@ -178,7 +180,7 @@ class App extends Component {
   // removeLabel = (e) => {
   //   const newArr = []
   //   const labelsFiltered = this.state.messages.map(message => {
-  //     if (message.selected === true) {
+  //     if (message.selected) {
   //       if (message.labels.includes(e.target.value)) {
   //         newArr.push(message.id)
   //         let removed = message.labels.indexOf(e.target.value)

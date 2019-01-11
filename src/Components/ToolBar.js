@@ -25,7 +25,7 @@ class ToolBar extends Component {
           >
             <i className="fa fa-plus"></i>
           </a>
-          
+
           <button
             className="btn btn-default"
             onClick={() => this.props.toolbarSelectAll()}
@@ -81,7 +81,7 @@ class ToolBar extends Component {
 
           <button
             className="btn btn-default"
-            onClick={() => this.props.deleteMessage(this.props)}
+            onClick={this.props.deleteMessage}
             disabled={disableToolbar}
           >
             <i className="fa fa-trash-o"></i>

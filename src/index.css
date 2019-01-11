@@ -69,13 +69,10 @@ footer.spacer {
   margin-right: .5em;
 }
 
-
-
 .emptyError {
   display: flex;
   flex-direction: row;
   justify-content: center;
-  
 }
 
 .fa-close {
