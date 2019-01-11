@@ -112,6 +112,7 @@ class App extends Component {
         message.read = false
         readArray.push(message.id)
         message.selected = false
+        message.opened = false
       }
       return message
     })
@@ -277,9 +278,13 @@ class App extends Component {
           addLabel={this.addLabel}
           markAsStarred={this.markAsStarred}
         />
+        <h3 className="emptyerror">
         {this.state.displayError 
           ? "Unable to load Messages" 
-          : ""}
+          : this.state.messages.length === 0
+            ? "Inbox is empty"
+            : ""}
+        </h3>
       </div>
     )
   }
