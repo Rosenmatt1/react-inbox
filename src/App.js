@@ -251,6 +251,7 @@ class App extends Component {
 
     return (
       <div className="container">
+
         <ToolBar
           addLabel={this.addLabel}
           markAsReadButton={this.markAsReadButton}
@@ -278,13 +279,15 @@ class App extends Component {
           addLabel={this.addLabel}
           markAsStarred={this.markAsStarred}
         />
-        <h3 className="emptyerror">
-        {this.state.displayError 
-          ? "Unable to load Messages" 
-          : this.state.messages.length === 0
-            ? "Inbox is empty"
-            : ""}
-        </h3>
+        <div className="emptyError">
+          <h3>
+            {this.state.displayError
+              ? "Unable to load Messages"
+              : this.state.messages.length === 0
+                ? "Inbox is empty"
+                : ""}
+          </h3>
+        </div>
       </div>
     )
   }
