@@ -30,10 +30,9 @@ class ComposeMessage extends Component {
           <div className="form-group">
             <label htmlFor="body" className="col-sm-2 control-label">Body</label>
             <div className="col-sm-8">
-              <textarea name="body" id="body" className="htmlForm-control" onChange={this.props.updateSubject}></textarea>
+              <textarea name="body" id="body" className="form-control" onChange={this.props.updateSubject}></textarea>
             </div>
           </div>
-
           <div className="form-group">
             <div className="col-sm-8 col-sm-offset-2">
               <input

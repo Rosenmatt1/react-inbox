@@ -220,8 +220,7 @@ class App extends Component {
     })
   }
 
-  sendMessage = (e) => {
-    e.preventDefault()
+  sendMessage = () => {
     var newMessage = {
       body: this.state.body,
       subject: this.state.subject,
