@@ -17,7 +17,9 @@ class App extends Component {
   }
 
   fetchMessages = () => {
-    return fetch('http://localhost:8082/api/messages')
+    
+    return fetch('https://react-email-inbox.herokuapp.com/api/messages')
+    // return fetch('http://localhost:8082/api/messages')
       .then(res => res.json())
       .then(messages => {
         let addSelected = messages.map(message => {
@@ -40,7 +42,7 @@ class App extends Component {
   }
 
   updates = async (id, command, prop, value) => {
-    await fetch('http://localhost:8082/api/messages', {
+    await fetch('https://react-email-inbox.herokuapp.com/api/messages', {
       method: 'PATCH',
       body: JSON.stringify({
         messageIds: id,
@@ -228,7 +230,7 @@ class App extends Component {
       body: this.state.body,
       subject: this.state.subject,
     }
-    fetch('http://localhost:8082/api/messages', {
+    fetch('https://react-email-inbox.herokuapp.com/api/messages', {
       method: 'POST',
       body: JSON.stringify(newMessage),
       headers: {
