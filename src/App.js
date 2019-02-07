@@ -4,7 +4,7 @@ import ToolBar from './Components/ToolBar.js'
 import MessageList from './Components/MessageList.js'
 import ComposeMessage from './Components/ComposeMessage.js'
 
-const url = "http://localhost:8082/api/messages/"
+const url = "https://react-email-inbox.herokuapp.com/api/messages/"
 // http://localhost:8082/api/messages/
 // "https://react-email-inbox.herokuapp.com/api/messages/"
 
