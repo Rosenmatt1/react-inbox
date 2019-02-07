@@ -4,6 +4,10 @@ import ToolBar from './Components/ToolBar.js'
 import MessageList from './Components/MessageList.js'
 import ComposeMessage from './Components/ComposeMessage.js'
 
+const url = "http://localhost:8082/api/messages/"
+// http://localhost:8082/api/messages/
+// "https://react-email-inbox.herokuapp.com/api/messages/"
+
 class App extends Component {
   constructor() {
     super()
@@ -17,9 +21,7 @@ class App extends Component {
   }
 
   fetchMessages = () => {
-    
-    return fetch('https://react-email-inbox.herokuapp.com/api/messages')
-    // return fetch('http://localhost:8082/api/messages')
+    return fetch(url)
       .then(res => res.json())
       .then(messages => {
         let addSelected = messages.map(message => {
@@ -42,7 +44,7 @@ class App extends Component {
   }
 
   updates = async (id, command, prop, value) => {
-    await fetch('https://react-email-inbox.herokuapp.com/api/messages', {
+    await fetch(url, {
       method: 'PATCH',
       body: JSON.stringify({
         messageIds: id,
@@ -230,7 +232,7 @@ class App extends Component {
       body: this.state.body,
       subject: this.state.subject,
     }
-    fetch('https://react-email-inbox.herokuapp.com/api/messages', {
+    fetch(url, {
       method: 'POST',
       body: JSON.stringify(newMessage),
       headers: {

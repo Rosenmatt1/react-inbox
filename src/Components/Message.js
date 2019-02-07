@@ -53,11 +53,20 @@ class Message extends Component {
             </a>
           </div>
         </div>
-        <div className={this.props.message.opened ? "row message-body" : "hidden"}>
+        {this.props.message.opened 
+        ? <div className= "row message-body">
           <div className="col-xs-11 col-xs-offset-1">
             {this.props.message.body}
           </div>
         </div>
+        : <div></div>
+        }
+
+        {/* <div className={this.props.message.opened ? "row message-body" : <div></div>}>
+          <div className="col-xs-11 col-xs-offset-1">
+            {this.props.message.body}
+          </div>
+        </div> */}
       </div>
     )
   }
