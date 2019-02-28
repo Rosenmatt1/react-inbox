@@ -1,3 +1,3 @@
  
  
- ![](sourceInbox.gif)
+ ![alt text](sourceInbox.gif)
