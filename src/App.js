@@ -87,7 +87,10 @@ class App extends Component {
   markAsStarred = (id) => {
     console.log(id)
     let starredMessage = this.state.messages.map(message => {
-      if (message.id === id) message.starred = !message.starred
+      if (message.id === id) {
+        message.starred = !message.starred
+      return message
+      }
       return message
     })
     this.setState({
