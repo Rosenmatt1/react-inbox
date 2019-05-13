@@ -6,7 +6,6 @@ import ComposeMessage from './Components/ComposeMessage.js'
 
 const url = "https://react-email-inbox.herokuapp.com/api/messages/"
 // http://localhost:8082/api/messages/
-// "https://react-email-inbox.herokuapp.com/api/messages/"
 
 class App extends Component {
   constructor() {
